@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de 20 Preguntas</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+        }
+        h1 {
+            color: #333;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #quizForm {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .question p {
+            font-size: 1.2em;
+            color: #444;
+        }
+        .question label {
+            display: block;
+            padding: 8px 0;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            color: #28a745;
+        }
+        .incorrect {
+            color: #dc3545;
+        }
+        .response {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .correct, .incorrect {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #result button {
+            background-color: #28a745;
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+        #result button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de 20 Preguntas</h1>
+
+    <form id="quizForm">
+        <div id="questions"></div>
+        <button type="button" class="btn" onclick="showResults()">Comprobar</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+    const questions = [
+        { question: "¿Qué implica la misión de una empresa según la teoría estratégica?", answers: ["Crear productos con beneficios", "Orientarse a los intereses de los stakeholders", "Definir la visión a largo plazo"], correctAnswer: 1, justification: "La misión se refiere a la orientación hacia los stakeholders y la forma en que la empresa se involucra con ellos." },
+        { question: "¿Qué diferencia a la visión estratégica de la misión?", answers: ["La misión define el presente y la visión el futuro", "La misión es a largo plazo y la visión es operativa", "No existe diferencia significativa entre ambas"], correctAnswer: 0, justification: "La visión está orientada hacia el futuro y la misión a lo que la empresa hace en el presente." },
+        { question: "¿Qué caracteriza un enfoque de planificación estratégica proactiva?", answers: ["Adaptarse únicamente a los cambios externos", "Anticiparse a los posibles cambios y oportunidades", "Depender exclusivamente del análisis de la competencia"], correctAnswer: 1, justification: "La planificación proactiva busca anticiparse a los cambios y oportunidades." },
+        { question: "¿Cuál es la principal tarea de la dirección estratégica en una organización?", answers: ["Controlar los costes operativos", "Desarrollar una visión y fijar objetivos claros", "Contratar personal competente"], correctAnswer: 1, justification: "La dirección estratégica tiene como tarea definir la visión y los objetivos claros de la empresa." },
+        { question: "¿Qué se entiende por 'ventaja competitiva sostenible'?", answers: ["Una ventaja temporal lograda mediante precios bajos", "Una ventaja que la empresa mantiene a lo largo del tiempo gracias a sus recursos y capacidades", "Una ventaja que depende de la innovación continua sin considerar los recursos"], correctAnswer: 1, justification: "Una ventaja competitiva sostenible se mantiene a lo largo del tiempo gracias a los recursos y capacidades de la empresa." },
+        { question: "¿Cuál es una de las principales actividades de la estrategia reactiva?", answers: ["Anticiparse a los cambios del mercado", "Responder a las circunstancias cambiantes de manera adaptativa", "Desarrollar nuevos productos constantemente"], correctAnswer: 1, justification: "La estrategia reactiva se adapta a cambios imprevistos del entorno." },
+        { question: "¿Qué tipo de objetivo se relaciona con el crecimiento de una empresa frente a sus competidores?", answers: ["Objetivo estratégico", "Objetivo financiero", "Objetivo operativo"], correctAnswer: 0, justification: "Los objetivos estratégicos están orientados a mejorar la posición competitiva de la empresa." },
+        { question: "¿Qué caracteriza la ejecución de una estrategia en una empresa?", answers: ["La supervisión de la estrategia una vez que ha sido diseñada", "La puesta en práctica activa de las decisiones y recursos", "La evaluación de la misión de la empresa"], correctAnswer: 1, justification: "La ejecución se refiere a poner en práctica las decisiones y recursos planificados." },
+        { question: "¿Por qué la cultura organizacional es importante en la implementación de una estrategia?", answers: ["Porque define los productos que la empresa debe ofrecer", "Porque ayuda a alinear las acciones y decisiones de todos los miembros de la organización", "Porque se relaciona con la rentabilidad inmediata"], correctAnswer: 1, justification: "La cultura organizacional facilita que todos los miembros trabajen alineados con los objetivos estratégicos." },
+        { question: "¿Qué es un plan estratégico?", answers: ["Una hoja de ruta para alcanzar los objetivos a corto plazo", "Un conjunto de acciones orientadas a asegurar el crecimiento sostenido de la empresa", "Un documento que describe cómo alcanzar los objetivos financieros anuales"], correctAnswer: 1, justification: "El plan estratégico es un conjunto de acciones orientadas al crecimiento sostenido de la empresa." },
+        { question: "¿Qué diferencia hay entre la misión estratégica y la visión estratégica?", answers: ["La misión es operativa y la visión es a largo plazo", "Ambas son conceptos estáticos", "La misión y la visión se definen de forma similar"], correctAnswer: 0, justification: "La misión está orientada a lo que hace la empresa actualmente, mientras que la visión está orientada a lo que quiere lograr en el futuro." },
+        { question: "¿Qué es la evaluación continua en la dirección estratégica?", answers: ["El análisis de la competencia únicamente", "La revisión constante de los resultados obtenidos y ajustes a la estrategia", "La mejora de productos basados solo en datos financieros"], correctAnswer: 1, justification: "La evaluación continua permite detectar fallos y realizar ajustes a tiempo para seguir el rumbo estratégico." },
+        { question: "¿Qué es una ventaja competitiva?", answers: ["Una ventaja lograda por factores internos y externos que posiciona a la empresa de manera favorable frente a la competencia", "El resultado de tener un equipo más grande", "El beneficio económico generado al reducir costos en la producción"], correctAnswer: 0, justification: "La ventaja competitiva se logra a través de recursos y capacidades que permiten una posición favorable frente a los competidores." },
+        { question: "¿Qué papel juega el consejo de administración en la estrategia empresarial?", answers: ["No tiene un papel relevante", "Evalúa y aprueba los planes estratégicos", "Solo ejecuta las decisiones tomadas por la alta dirección"], correctAnswer: 1, justification: "El consejo de administración tiene el rol de evaluar y aprobar los planes estratégicos propuestos por la alta dirección." },
+        { question: "¿Cuál es la importancia de los recursos humanos en la estrategia empresarial?", answers: ["Son fundamentales solo para la ejecución operativa", "Es importante motivar y capacitar a los recursos humanos para alcanzar los objetivos estratégicos", "No son relevantes en la estrategia a largo plazo"], correctAnswer: 1, justification: "El talento humano es clave para implementar correctamente la estrategia, ya que su motivación y habilidades son determinantes." },
+        { question: "¿Qué implica la segmentación en el diseño de la estrategia?", answers: ["La creación de nuevos productos", "Dividir el mercado en subgrupos con características similares para atenderlos mejor", "Reducir los costos operativos"], correctAnswer: 1, justification: "La segmentación ayuda a identificar los distintos tipos de clientes a los que se les puede ofrecer productos o servicios específicos." },
+        { question: "¿Qué debe tener en cuenta una empresa para su adaptación continua?", answers: ["La constante evaluación de su estrategia", "El mantenimiento de la misma estrategia a largo plazo", "La expansión de operaciones sin cambios en el mercado"], correctAnswer: 0, justification: "La empresa debe revisar su estrategia de manera constante para adaptarse a las condiciones cambiantes del entorno." },
+        { question: "¿Qué función tiene el análisis DAFO en la estrategia empresarial?", answers: ["Permite identificar debilidades internas y oportunidades externas", "Es una herramienta exclusivamente financiera", "Solo sirve para determinar precios de productos"], correctAnswer: 0, justification: "El análisis DAFO permite evaluar las fortalezas, debilidades, oportunidades y amenazas de la empresa en relación con su entorno." },
+        { question: "¿Cuál es la importancia de la innovación en una estrategia competitiva?", answers: ["Reducir costos sin considerar la calidad", "Mantener a la empresa competitiva al adaptarse a los cambios tecnológicos y del mercado", "Evitar la competencia directa en todos los mercados"], correctAnswer: 1, justification: "La innovación es esencial para mantener a la empresa competitiva, especialmente en mercados dinámicos y cambiantes." },
+        { question: "¿Qué hace el análisis del entorno para la estrategia empresarial?", answers: ["Determina solo las amenazas externas", "Proporciona información clave sobre las oportunidades y amenazas externas y las fortalezas internas", "Solo se enfoca en los competidores"], correctAnswer: 1, justification: "El análisis del entorno ayuda a la empresa a comprender las variables externas e internas que impactan su rendimiento." }
+    ];
+
+
+        function renderQuestions() {
+            const questionContainer = document.getElementById("questions");
+            questions.forEach((question, index) => {
+                const questionElement = document.createElement("div");
+                questionElement.classList.add("question");
+
+                const questionText = document.createElement("p");
+                questionText.innerText = `${index + 1}. ${question.question}`;
+                questionElement.appendChild(questionText);
+
+                question.answers.forEach((answer, i) => {
+                    const label = document.createElement("label");
+                    label.innerHTML = `
+                        <input type="radio" name="q${index}" value="${i}" onclick="checkAnswer(${index}, ${i})">
+                        ${answer}
+                    `;
+                    questionElement.appendChild(label);
+                    questionElement.appendChild(document.createElement("br"));
+                });
+
+                questionElement.appendChild(document.createElement("div"));
+                questionContainer.appendChild(questionElement);
+            });
+        }
+
+        function checkAnswer(questionIndex, selectedValue) {
+            const question = questions[questionIndex];
+            const responseElement = document.createElement("div");
+            const questionElement = document.getElementsByClassName("question")[questionIndex];
+            
+            const feedback = questionElement.getElementsByTagName("div")[0];
+            feedback.innerHTML = ""; // Limpiar feedback anterior
+
+            if (selectedValue === question.correctAnswer) {
+                feedback.classList.add("correct");
+                feedback.innerText = `Correcto: ${question.justification}`;
+            } else {
+                feedback.classList.add("incorrect");
+                feedback.innerText = `Incorrecto. ${question.justification}`;
+            }
+        }
+
+        function showResults() {
+            let score = 0;
+            questions.forEach((question, index) => {
+                const selectedAnswer = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedAnswer !== null) {
+                    const answerValue = parseInt(selectedAnswer.value);
+                    if (answerValue === question.correctAnswer) {
+                        score += 0.5;
+                    } else {
+                        score -= 0.5;
+                    }
+                }
+            });
+
+            const totalScore = document.createElement("p");
+            totalScore.innerText = `Nota final: ${score.toFixed(2)} / 10`;
+            const button = document.createElement("button");
+            button.classList.add("btn");
+            button.innerText = "Corregir";
+            button.onclick = () => location.reload();
+            document.getElementById("result").appendChild(totalScore);
+            document.getElementById("result").appendChild(button);
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
